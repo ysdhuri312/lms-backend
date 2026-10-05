@@ -1,8 +1,8 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
-import { globalErrorHandler } from './handlers/GlobalErrorHandler.js';
 import { AppError } from './handlers/CustomErrorHandler.js';
 import cookieParser from 'cookie-parser';
+import { globalErrorHandler } from './handlers/globalErrorHandler.js';
 
 export const app = express();
 
@@ -20,7 +20,7 @@ export function sum(a: number, b: number) {
 app.get('/', (_req: Request, res: Response) => {
   res.json({
     success: true,
-    message: 'Welcome to API v1.0.0',
+    message: 'Welcome to API v2.0.0',
     timestamp: new Date().toISOString(),
   });
 });

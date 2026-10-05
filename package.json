@@ -9,17 +9,23 @@
     "start": "cross-env NODE_ENV=production node ./dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
     "lint:check": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "db:push": "drizzle-kit push"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@prisma/cli-engine": "^0.6.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/node": "^26.6.4",
+    "@types/pg": "^8.23.1",
     "@types/supertest": "^7.2.1",
     "cross-env": "^10.1.0",
+    "drizzle-kit": "^1.0.0-rc.4",
     "eslint": "^10.7.0",
     "nodemon": "^3.1.14",
+    "prisma": "^8.0.0-rc.19",
     "supertest": "^7.2.2",
     "tsx": "^4.23.1",
     "typescript": "^5.0.0",
@@ -29,9 +35,12 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@prisma/orm-postgres": "^8.0.0-rc.14",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "drizzle-orm": "^1.0.0-rc.4",
+    "express": "^5.2.1",
+    "pg": "^8.23.1"
   }
 }

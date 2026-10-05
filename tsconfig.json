@@ -3,14 +3,14 @@
     // Environment setup & latest features
     "lib": ["ES2022"],
     "target": "es2022",
-    "module": "nodenext",
+    "module": "preserve",
     "moduleDetection": "force",
     "types": ["node"],
     "esModuleInterop": true,
     "removeComments": true,
     "isolatedModules": true,
 
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": true,
 
@@ -24,7 +24,8 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist"]

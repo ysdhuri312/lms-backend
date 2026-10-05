@@ -1,16 +1,16 @@
 import { app } from './app.js';
-// import { connectDB, disconnectDB } from './configs/db.js';
+import { connectDB, disconnectDB } from './configs/db.js';
 import { env } from './configs/env.js';
 
-// await connectDB();
+await connectDB();
 const server = app.listen(env.PORT, () => {
   console.log(`✅ Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
 });
 
 server.on('error', (err) => {
-  void (() => {
+  void (async () => {
     console.error('❌ Startup failed. Exiting...', err);
-    // await disconnectDB();
+    await disconnectDB();
     process.exit(1);
   })();
 });
@@ -25,13 +25,13 @@ const shutdown = (signal: string, exitCode: number) => {
   console.log(`\n🛑 ${signal} received. Shutting down gracefully.`);
 
   server.close((error) => {
-    void (() => {
+    void (async () => {
       if (error) {
         console.error('❌ Failed to close HTTP server:', error);
       }
 
       try {
-        // await disconnectDB();
+        await disconnectDB();
       } catch (error) {
         console.error('❌ Failed to disconnect database:', error);
       }
