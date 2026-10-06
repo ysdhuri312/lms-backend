@@ -1,8 +1,9 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
-import { AppError } from './handlers/CustomErrorHandler.js';
 import cookieParser from 'cookie-parser';
+import { AppError } from './handlers/CustomErrorHandler.js';
 import { globalErrorHandler } from './handlers/globalErrorHandler.js';
+import authRouter from './routes/v1/auth.js';
 
 export const app = express();
 
@@ -24,6 +25,9 @@ app.get('/', (_req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// Router
+app.use('/api/v1', authRouter);
 
 app.get('/error', () => {
   throw new AppError(404, 'Not found');

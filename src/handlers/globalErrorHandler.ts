@@ -1,19 +1,25 @@
 import type { Response, Request, NextFunction } from 'express';
 import { env } from '../configs/env.js';
-import type { AppError } from './CustomErrorHandler.js';
+import { AppError } from './CustomErrorHandler.js';
 
 export function globalErrorHandler(
-  err: AppError,
+  err: Error,
   _req: Request,
   res: Response,
   _next: NextFunction,
 ) {
-  err.statusCode = err.statusCode || 500;
-  err.message = err.message || 'Internal Server Error';
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+      timestamp: new Date().toISOString(),
+      details: env.NODE_ENV === 'development' ? err.stack : null,
+    });
+  }
 
-  res.status(err.statusCode).json({
+  return res.status(500).json({
     success: false,
-    message: err.message,
+    message: 'Internal Server Error',
     timestamp: new Date().toISOString(),
     details: env.NODE_ENV === 'development' ? err.stack : null,
   });
