@@ -8,11 +8,11 @@ export class AuthRepository {
   findByEmail = async (email: string) => {
     try {
       const [user] = await db
-        .select({ id: usersTable.id })
+        .select()
         .from(usersTable)
         .where(eq(usersTable.email, email))
         .limit(1);
-      return !!user;
+      return user;
     } catch (err) {
       throw new AppError(500, 'Error while finding user by email', err);
     }
