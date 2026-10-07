@@ -31,4 +31,19 @@ export class AuthController {
       user,
     });
   };
+
+  me = (_req: Request, res: Response, _next: NextFunction) => {
+    res.json({
+      success: true,
+      message: 'User authorize',
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  logout = (_req: Request, res: Response, _next: NextFunction) => {
+    res.status(200).cookie('token', '').json({
+      success: true,
+      message: 'User logout successfully',
+    });
+  };
 }

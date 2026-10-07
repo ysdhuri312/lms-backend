@@ -1,15 +1,27 @@
 import type { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import { authController } from '../../modules/auth/container';
+import { authorize } from '../../modules/auth/auth.middleware';
 
-const router = express.Router();
+const authRouter = express.Router();
 
-router.get('/register', (req: Request, res: Response, next: NextFunction) =>
+authRouter.get('/register', (req: Request, res: Response, next: NextFunction) =>
   authController.register(req, res, next),
 );
 
-router.get('/login', (req: Request, res: Response, next: NextFunction) =>
+authRouter.get('/login', (req: Request, res: Response, next: NextFunction) =>
   authController.login(req, res, next),
 );
 
-export default router;
+authRouter.get(
+  '/me',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.me(req, res, next),
+);
+
+authRouter.get('/logout', (req: Request, res: Response, next: NextFunction) =>
+  authController.logout(req, res, next),
+);
+
+export default authRouter;

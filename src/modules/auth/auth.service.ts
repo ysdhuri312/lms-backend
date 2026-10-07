@@ -4,6 +4,7 @@ import { AppError } from '../../handlers/CustomErrorHandler';
 import type { AuthRepository } from './auth.repository';
 import type { loginDto, registerDto } from './auth.schema';
 import { env } from '../../configs/env';
+import type { JwtPayload } from '../../types';
 
 export class AuthService {
   constructor(private readonly authReposiory: AuthRepository) {}
@@ -27,7 +28,7 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    const payload: { id: number; email: string } = {
+    const payload: JwtPayload = {
       id: user!.id,
       email: user!.email,
     };
