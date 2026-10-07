@@ -23,7 +23,7 @@ export class AuthRepository {
       const [user] = await db
         .insert(usersTable)
         .values(dto)
-        .returning({ email: usersTable.email });
+        .returning({ id: usersTable.id, email: usersTable.email });
       return user;
     } catch (err) {
       throw new AppError(500, 'Error while creating user', err);

@@ -1,8 +1,9 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import { AppError } from '../../handlers/CustomErrorHandler';
 import type { AuthRepository } from './auth.repository';
 import type { loginDto, registerDto } from './auth.schema';
-import { email } from 'zod';
+import { env } from '../../configs/env';
 
 export class AuthService {
   constructor(private readonly authReposiory: AuthRepository) {}
@@ -25,7 +26,17 @@ export class AuthService {
       email: dto.email,
       password: hashedPassword,
     });
-    return user;
+
+    const payload: { id: number; email: string } = {
+      id: user!.id,
+      email: user!.email,
+    };
+
+    const token = jwt.sign(payload, env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    return { user, token };
   };
 
   login = async (dto: loginDto) => {
@@ -42,6 +53,15 @@ export class AuthService {
       throw new AppError(401, 'Invalid credential');
     }
 
-    return user.email;
+    const payload: { id: number; email: string } = {
+      id: user.id,
+      email: user.email,
+    };
+
+    const token = jwt.sign(payload, env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    return { user: { id: user.id, email: user.email }, token };
   };
 }
