@@ -2,7 +2,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { env } from './env.js';
 import { Pool } from 'pg';
 
-const uri = env.DATABASE_URL as string;
+const uri = env.DATABASE_URL;
 const pool = new Pool({
   connectionString: uri,
 });
