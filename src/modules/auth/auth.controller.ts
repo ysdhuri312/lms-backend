@@ -16,7 +16,7 @@ export class AuthController {
 
     const { user, token } = await this.authService.register(dto);
 
-    res.status(200).cookie('token', `Bearer ${token}`, cookieOptions).json({
+    res.status(201).cookie('token', `Bearer ${token}`, cookieOptions).json({
       success: true,
       message: 'User register successfully',
       user,
