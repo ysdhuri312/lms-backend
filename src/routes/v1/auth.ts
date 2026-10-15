@@ -5,11 +5,13 @@ import { authorize } from '../../modules/auth/auth.middleware';
 
 const authRouter = express.Router();
 
-authRouter.get('/register', (req: Request, res: Response, next: NextFunction) =>
-  authController.register(req, res, next),
+authRouter.post(
+  '/register',
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.register(req, res, next),
 );
 
-authRouter.get('/login', (req: Request, res: Response, next: NextFunction) =>
+authRouter.post('/login', (req: Request, res: Response, next: NextFunction) =>
   authController.login(req, res, next),
 );
 
