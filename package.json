@@ -4,13 +4,14 @@
   "main": "server.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "vitest run",
-    "test:watch": "vitest watch",
+    "test": "npm run db:push:test && cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest watch",
     "start": "cross-env NODE_ENV=production node ./dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch src --ext ts --exec tsx src/server.ts",
     "lint:check": "eslint .",
     "lint:fix": "eslint . --fix",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:push:test": "cross-env NODE_ENV=test drizzle-kit push"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

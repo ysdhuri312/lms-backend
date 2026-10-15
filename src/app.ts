@@ -12,11 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 
-export function sum(a: number, b: number) {
-  const sum = a + b;
-  return sum;
-}
-
 app.get('/', (_req: Request, res: Response) => {
   res.json({
     success: true,
