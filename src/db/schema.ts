@@ -27,7 +27,7 @@ export const usersTable = pgTable('users', {
 export const courseTable = pgTable('courses', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   title: varchar({ length: 255 }).notNull(),
-  slug: varchar({ length: 255 }).notNull(),
+  slug: varchar({ length: 255 }).notNull().unique(),
   description: varchar({ length: 255 }).notNull(),
   creatorId: integer('creator_id').notNull(),
   thumbnailUrl: varchar('thumbnail_url', { length: 255 }),

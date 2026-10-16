@@ -8,4 +8,8 @@ courseRouter.get('/all', (req: Request, res: Response, next: NextFunction) =>
   courseController.getAllcourse(req, res, next),
 );
 
+courseRouter.get('/:slug', (req: Request, res: Response, next: NextFunction) =>
+  courseController.getCourse(req, res, next),
+);
+
 export default courseRouter;
