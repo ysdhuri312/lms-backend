@@ -1,9 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { AppError } from '../../handlers/CustomErrorHandler';
-import jwt from 'jsonwebtoken';
-import { env } from '../../configs/env';
 import { authRepository } from './container';
-import type { JwtPayload } from '../../types';
+import { verifyToken } from '../../utils/token';
 
 type AuthCookies = {
   token?: string;
@@ -26,7 +24,7 @@ export const authorize = async (
       return next(new AppError(401, 'Unauthorized'));
     }
 
-    const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    const decoded = verifyToken(token);
 
     const user = await authRepository.findByEmail(decoded.email);
 

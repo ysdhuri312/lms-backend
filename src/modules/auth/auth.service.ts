@@ -1,10 +1,9 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { AppError } from '../../handlers/CustomErrorHandler';
 import type { AuthRepository } from './auth.repository';
 import type { loginDto, registerDto } from './auth.schema';
-import { env } from '../../configs/env';
 import type { JwtPayload } from '../../types';
+import { createToken } from '../../utils/token';
 
 export class AuthService {
   constructor(private readonly authReposiory: AuthRepository) {}
@@ -33,9 +32,7 @@ export class AuthService {
       email: user!.email,
     };
 
-    const token = jwt.sign(payload, env.JWT_SECRET, {
-      expiresIn: '1d',
-    });
+    const token = createToken(payload);
 
     return { user, token };
   };
@@ -59,9 +56,7 @@ export class AuthService {
       email: user.email,
     };
 
-    const token = jwt.sign(payload, env.JWT_SECRET, {
-      expiresIn: '1d',
-    });
+    const token = createToken(payload);
 
     return { user: { id: user.id, email: user.email }, token };
   };
