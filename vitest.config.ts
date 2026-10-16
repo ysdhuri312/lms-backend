@@ -8,5 +8,9 @@ export default defineConfig({
     setupFiles: ['/tests/setup.ts'],
     testTimeout: 10000, //ms
     hookTimeout: 10000, //ms
+
+    // Prevent register and login files from
+    // running concurrently against the same database.
+    fileParallelism: false,
   },
 });

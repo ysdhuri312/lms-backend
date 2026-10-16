@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { app } from '../../src/app';
 import { db } from '../../src/configs/db';
@@ -7,16 +7,6 @@ import { eq } from 'drizzle-orm';
 
 describe('Test user register functionality', () => {
   const email = 'test@test.com';
-
-  beforeEach(async () => {
-    // Remove test user before each test.
-    await db.delete(usersTable).where(eq(usersTable.email, email));
-  });
-
-  afterAll(async () => {
-    // Remove test data after all tests.
-    await db.delete(usersTable).where(eq(usersTable.email, email));
-  });
 
   // Arrange
   const endpoint = '/api/v1/auth/register';
