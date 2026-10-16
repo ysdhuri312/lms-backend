@@ -3,7 +3,7 @@ import { env } from './env.js';
 import { Pool } from 'pg';
 
 const uri = env.DATABASE_URL;
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: uri,
 });
 

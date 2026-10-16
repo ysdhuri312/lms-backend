@@ -22,7 +22,7 @@ export default defineConfig([
       'no-console': 'off',
       'no-unused-vars': 'off',
       'no-constant-condition': 'error',
-      curly: 'error',
+      curly: 'off',
       'no-eval': 'error',
       'no-implied-eval': 'error',
       'no-redeclare': 'error',
@@ -32,6 +32,7 @@ export default defineConfig([
       'callback-return': 'warn',
       'handle-callback-err': 'error',
       'no-path-concat': 'error',
+
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
