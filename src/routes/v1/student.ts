@@ -12,4 +12,11 @@ studentRouter.get(
     studentController.getStudentData(req, res, next),
 );
 
+studentRouter.put(
+  '/edit-profile',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    studentController.updateStudentData(req, res, next),
+);
+
 export default studentRouter;
