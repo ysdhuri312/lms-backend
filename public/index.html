@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LMS Razorpay Test Checkout</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h1>LMS Course Payment Test</h1>
+
+  <label for="courseId">Course ID:</label>
+  <input id="courseId" placeholder="Enter course UUID" />
+
+  <br /><br />
+
+  <label for="token">Access token:</label>
+  <input id="token" type="password" placeholder="Paste your bearer token" />
+
+  <br /><br />
+
+  <button id="payButton">Pay for Course</button>
+  <pre id="result"></pre>
+
+  <script>
+    const result = document.getElementById('result');
+    const payButton = document.getElementById('payButton');
+
+    payButton.addEventListener('click', async () => {
+      const courseId = document.getElementById('courseId').value.trim();
+      const token = document.getElementById('token').value.trim();
+
+      if (!courseId || !token) {
+        result.textContent = 'Enter a course ID and access token.';
+        return;
+      }
+
+      payButton.disabled = true;
+
+      try {
+        // 1. Ask your backend to create an order.
+        const orderResponse = await fetch(
+          `http://localhost:4000/api/v1/course/purchase/${courseId}/orders`,
+          {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const orderData = await orderResponse.json();
+
+        if (!orderResponse.ok || !orderData.success) {
+          throw new Error(orderData.message || 'Could not create order');
+        }
+
+        const order = orderData.data;
+
+        // 2. Open Razorpay Checkout.
+        const checkout = new Razorpay({
+          key: order.keyId,
+          order_id: order.orderId,
+          amount: order.amount,
+          currency: 'INR',
+          name: 'My LMS',
+          description: 'Course enrollment',
+
+          handler: async (response) => {
+            result.textContent = 'Payment received. Verifying...';
+
+            try {
+              // 3. Send Checkout's response to your backend.
+              const verifyResponse = await fetch(
+                `http://localhost:4000/api/v1/course/purchase/${courseId}/verify`,
+                {
+                  method: 'POST',
+                  credentials: "same-origin",
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify(response),
+                }
+              );
+
+              const verification = await verifyResponse.json();
+
+              result.textContent = JSON.stringify(
+                verification,
+                null,
+                2
+              );
+            } catch (error) {
+              result.textContent =
+                'Verification request failed. Check your payment status before retrying.';
+            }
+          },
+
+          modal: {
+            ondismiss: () => {
+              result.textContent =
+                'Checkout closed. Check payment status before retrying.';
+            },
+          },
+        });
+
+        checkout.on('payment.failed', (response) => {
+          result.textContent =
+            'Payment failed: ' +
+            (response.error.description || 'Unknown error');
+        });
+
+        checkout.open();
+      } catch (error) {
+        result.textContent =
+          error instanceof Error ? error.message : 'Something went wrong';
+      } finally {
+        payButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
