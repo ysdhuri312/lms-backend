@@ -1,6 +1,6 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '../../configs/db';
-import { usersTable } from '../../db/schema';
+import { purchaseTable, usersTable } from '../../db/schema';
 import { AppError } from '../../handlers/CustomErrorHandler';
 import type { studentDto } from './student.schema';
 
@@ -39,6 +39,23 @@ export class StudentRepository {
         .returning({ id: usersTable.id, email: usersTable.email });
     } catch (err) {
       throw new AppError(500, 'Error while update student data', err);
+    }
+  };
+
+  // fetch student enrolled courses
+  getStudentEnrolledCourses = async (userId: number) => {
+    try {
+      return await db
+        .select()
+        .from(purchaseTable)
+        .where(
+          and(
+            eq(purchaseTable.userId, userId),
+            eq(purchaseTable.status, 'completed'),
+          ),
+        );
+    } catch (err) {
+      throw new AppError(500, 'Error while fetching courses', err);
     }
   };
 }

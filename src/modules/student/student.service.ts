@@ -26,4 +26,8 @@ export class StudentService {
 
     return student;
   };
+
+  getStudentEnrolledCourses = async (userId: number) => {
+    return await this.studentRepository.getStudentEnrolledCourses(userId);
+  };
 }

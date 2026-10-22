@@ -38,4 +38,21 @@ export class StudentController {
       student,
     });
   };
+
+  // update student profile details
+  getStudentEnrolledCorses = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const userId = req.user?.id as number;
+
+    const courses = await this.studentService.getStudentEnrolledCourses(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Courses fetch successfully',
+      courses,
+    });
+  };
 }

@@ -19,4 +19,11 @@ studentRouter.put(
     studentController.updateStudentData(req, res, next),
 );
 
+studentRouter.get(
+  '/enrolled-courses',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    studentController.getStudentEnrolledCorses(req, res, next),
+);
+
 export default studentRouter;
