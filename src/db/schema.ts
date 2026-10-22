@@ -1,6 +1,7 @@
 import {
   boolean,
   integer,
+  numeric,
   pgEnum,
   pgTable,
   timestamp,
@@ -58,7 +59,7 @@ export const purchaseTable = pgTable('purchases', {
   razorpayPaymentId: varchar('razorpay_payment_id', {
     length: 100,
   }).unique(),
-  amount: integer().notNull(),
+  amount: numeric({ mode: 'number' }).notNull(),
   status: paymentStatusEnum().default('pending').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()

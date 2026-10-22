@@ -39,10 +39,19 @@ export class CourseService {
 
     if (!user || !course) throw new AppError(404, 'Data not found');
 
-    const courseAmount = Number(
+    const courseAlreadyPurchased = await this.courseRepository.existingPurchase(
+      user.id,
+      course.id,
+    );
+
+    if (courseAlreadyPurchased) {
+      throw new AppError(409, 'You have already enrolled in this course');
+    }
+
+    const courseAmount: number = Number(
       !course.discount
         ? course.price
-        : (course.price - (course.discount / course.price) * 100).toFixed(2),
+        : (course.price - course.price * (course.discount / 100)).toFixed(2),
     );
 
     const purchaseData: {
@@ -134,7 +143,7 @@ export class CourseService {
 
     if (
       payment.order_id !== orderedDetails.razorpayOrderId ||
-      payment.amount !== orderedDetails.amount * 100
+      payment.amount !== Number(orderedDetails.amount) * 100
     ) {
       throw new AppError(400, 'Payment details do not match the order');
     }

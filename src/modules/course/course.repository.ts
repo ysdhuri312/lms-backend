@@ -61,6 +61,29 @@ export class CourseRepository {
     }
   };
 
+  existingPurchase = async (userId: number, courseId: number) => {
+    try {
+      const [course] = await db
+        .select({})
+        .from(purchaseTable)
+        .where(
+          and(
+            eq(purchaseTable.userId, userId),
+            eq(purchaseTable.courseId, courseId),
+            eq(purchaseTable.status, 'completed'),
+          ),
+        )
+        .limit(1);
+      return course;
+    } catch (err) {
+      throw new AppError(
+        500,
+        'Error while find existing purchase course details',
+        err,
+      );
+    }
+  };
+
   getOrderedCourseByOrderedId = async (
     userId: number,
     razorpayOrderId: string,
