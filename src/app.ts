@@ -2,7 +2,7 @@ import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { globalErrorHandler } from './handlers/globalErrorHandler.js';
-import authRouter from './routes/v1/auth.js';
+import authRouter from './routes/v1/auth.routes.js';
 import courseRouter from './routes/v1/course.routes.js';
 import studentRouter from './routes/v1/student.routes.js';
 import path from 'node:path';
