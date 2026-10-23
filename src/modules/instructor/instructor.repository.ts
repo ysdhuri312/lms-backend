@@ -4,6 +4,7 @@ import { usersTable } from '../../db/schema';
 import { AppError } from '../../handlers/CustomErrorHandler';
 
 export class InstructorRepository {
+  // update role to educator
   updateRoleToInstructor = async (userId: number) => {
     try {
       const [user] = await db

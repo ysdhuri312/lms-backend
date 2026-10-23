@@ -4,6 +4,7 @@ import type { InstructorService } from './instructor.service';
 export class InstructorController {
   constructor(private readonly instuctorService: InstructorService) {}
 
+  // update role to educator
   updateRoleToInstructor = async (
     req: Request,
     res: Response,
