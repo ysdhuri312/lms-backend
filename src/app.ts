@@ -6,6 +6,7 @@ import authRouter from './routes/v1/auth.routes.js';
 import courseRouter from './routes/v1/course.routes.js';
 import studentRouter from './routes/v1/student.routes.js';
 import path from 'node:path';
+import instructorRouter from './routes/v1/instructor.routes.js';
 export const app = express();
 
 // middlewares
@@ -43,5 +44,6 @@ app.get('/', (_req: Request, res: Response) => {
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/course', courseRouter);
 app.use('/api/v1/student', studentRouter);
+app.use('/api/v1/instructor', instructorRouter);
 
 app.use(globalErrorHandler);
