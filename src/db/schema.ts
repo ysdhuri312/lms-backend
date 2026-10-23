@@ -35,7 +35,9 @@ export const courseTable = pgTable('courses', {
   title: varchar({ length: 255 }).notNull(),
   slug: varchar({ length: 255 }).notNull().unique(),
   description: varchar({ length: 255 }).notNull(),
-  creatorId: integer('creator_id').notNull(),
+  creatorId: integer('creator_id')
+    .notNull()
+    .references(() => usersTable.id),
   thumbnailUrl: varchar('thumbnail_url', { length: 255 }),
   price: integer().notNull(),
   isPublished: boolean('is_published').notNull().default(false),
@@ -51,8 +53,12 @@ export const courseTable = pgTable('courses', {
 
 export const purchaseTable = pgTable('purchases', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  courseId: integer('course_id').notNull(),
-  userId: integer('user_id').notNull(),
+  courseId: integer('course_id')
+    .notNull()
+    .references(() => courseTable.id),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => usersTable.id),
   razorpayOrderId: varchar('razorpay_order_id', {
     length: 100,
   }).unique(),

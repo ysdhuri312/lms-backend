@@ -11,8 +11,22 @@ export const app = express();
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:4000',
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
+
+// app.use((req, _res, next) => {
+//   console.log('Request URL:', req.originalUrl);
+//   console.log('Origin:', req.headers.origin);
+//   console.log('Cookie header:', req.headers.cookie);
+//   console.log('Parsed cookies:', req.cookies);
+
+//   next();
+// });
 
 // Serve static files
 app.use(express.static(path.join(path.resolve(), 'public')));

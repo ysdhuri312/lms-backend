@@ -37,12 +37,16 @@ export class CourseService {
     const user = await this.userRepository.findByEmail(email);
     const course = await this.courseRepository.getCourse(slug);
 
+    console.log(email);
+
     if (!user || !course) throw new AppError(404, 'Data not found');
 
     const courseAlreadyPurchased = await this.courseRepository.existingPurchase(
       user.id,
       course.id,
     );
+
+    console.log(courseAlreadyPurchased);
 
     if (courseAlreadyPurchased) {
       throw new AppError(409, 'You have already enrolled in this course');
@@ -96,6 +100,7 @@ export class CourseService {
     }
   };
 
+  // Verify payment
   verifyCoursePayment = async (
     userId: number,
     input: VerifyPaymentInput,

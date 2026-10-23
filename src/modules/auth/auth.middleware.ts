@@ -3,23 +3,15 @@ import { AppError } from '../../handlers/CustomErrorHandler';
 import { authRepository } from './container';
 import { verifyToken } from '../../utils/token';
 
-type AuthCookies = {
-  token?: string;
-};
-
 export const authorize = async (
   req: Request,
   _res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const cookies = req.cookies as AuthCookies;
-    let token = cookies.token;
+    const token = req.cookies.token as string;
 
-    if (token && token.startsWith('Bearer')) {
-      token = token.split(' ')[1];
-    }
-
+    // Send token on cookies then not neccessary add bearer prefix.
     if (!token) {
       return next(new AppError(401, 'Unauthorized'));
     }
