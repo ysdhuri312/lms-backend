@@ -14,6 +14,9 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   PAYMENT_KEY_ID: z.string(),
   PAYMENT_KEY_SECRET: z.string(),
+  CLOUDINARY_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_SECRET_KEY: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

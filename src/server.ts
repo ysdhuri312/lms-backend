@@ -1,11 +1,14 @@
 import { app } from './app.js';
 import { connectDB, disconnectDB } from './configs/db.js';
 import { env } from './configs/env.js';
+import connectCloudinary from './utils/cloudinary.js';
 
 await connectDB();
 const server = app.listen(env.PORT, () => {
   console.log(`✅ Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
 });
+
+connectCloudinary();
 
 server.on('error', (err) => {
   void (async () => {
