@@ -15,6 +15,7 @@ export const paymentStatusEnum = pgEnum('status', [
   'failed',
 ]);
 
+// User Schema
 export const usersTable = pgTable('users', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
@@ -30,8 +31,9 @@ export const usersTable = pgTable('users', {
     .notNull(),
 });
 
+// Course Schema
 export const courseTable = pgTable('courses', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  courseId: varchar('course_id', { length: 255 }).unique().notNull(),
   title: varchar({ length: 255 }).notNull(),
   slug: varchar({ length: 255 }).notNull().unique(),
   description: varchar({ length: 255 }).notNull(),
@@ -51,11 +53,36 @@ export const courseTable = pgTable('courses', {
     .$onUpdate(() => new Date()),
 });
 
+export const chapterTable = pgTable('chapters', {
+  chapterId: varchar('chapter_id', { length: 255 }).unique().notNull(),
+  chapterOrder: integer('chapter_order').notNull(),
+  chapterTitle: varchar('chapter_title', { length: 255 }).notNull(),
+  courseId: varchar('course_id')
+    .references(() => courseTable.courseId)
+    .notNull(),
+});
+
+export const lectureTable = pgTable('lectures', {
+  lectureId: varchar('lecture_id', { length: 255 }).unique().notNull(),
+  lectureTitle: varchar('lecture_title', { length: 255 }).notNull(),
+  lectureDuration: integer('lecture_duration').notNull(),
+  lectureUrl: varchar('lecture_url', { length: 255 }).notNull(),
+  isPreviewFree: boolean('is_preview_free').notNull(),
+  lectureOrder: integer('lecture_order').notNull(),
+  chapterId: varchar('chapter_id', { length: 255 })
+    .references(() => chapterTable.chapterId)
+    .notNull(),
+  courseId: varchar('course_id', { length: 255 })
+    .references(() => courseTable.courseId)
+    .notNull(),
+});
+
+// Purchase Schema
 export const purchaseTable = pgTable('purchases', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  courseId: integer('course_id')
+  courseId: varchar('course_id', { length: 255 })
     .notNull()
-    .references(() => courseTable.id),
+    .references(() => courseTable.courseId),
   userId: integer('user_id')
     .notNull()
     .references(() => usersTable.id),

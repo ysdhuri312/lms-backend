@@ -25,7 +25,7 @@ export class CourseRepository {
   };
 
   purchaseCourse = async (purchaseData: {
-    courseId: number;
+    courseId: string;
     userId: number;
     amount: number;
   }) => {
@@ -61,7 +61,7 @@ export class CourseRepository {
     }
   };
 
-  existingPurchase = async (userId: number, courseId: number) => {
+  existingPurchase = async (userId: number, courseId: string) => {
     try {
       const [course] = await db
         .select({})
