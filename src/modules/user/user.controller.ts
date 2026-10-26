@@ -6,7 +6,7 @@ import {
   type registerDto,
 } from './user.schema';
 import { cookieOptions } from '../../utils/cookieOption';
-import type { AuthService } from './user.service';
+import type { UserService } from './user.service';
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
