@@ -1,29 +1,29 @@
 import type { Request, Response, NextFunction } from 'express';
 import express from 'express';
-import { authController } from '../../modules/auth/container';
-import { authorize } from '../../modules/auth/auth.middleware';
+import { userController } from '../../modules/user/container';
+import { authorize } from '../../modules/user/user.middleware';
 
-const authRouter = express.Router();
+const userRouter = express.Router();
 
-authRouter.post(
+userRouter.post(
   '/register',
   (req: Request, res: Response, next: NextFunction) =>
-    authController.register(req, res, next),
+    userController.register(req, res, next),
 );
 
-authRouter.post('/login', (req: Request, res: Response, next: NextFunction) =>
-  authController.login(req, res, next),
+userRouter.post('/login', (req: Request, res: Response, next: NextFunction) =>
+  userController.login(req, res, next),
 );
 
-authRouter.get(
+userRouter.get(
   '/me',
   authorize,
   (req: Request, res: Response, next: NextFunction) =>
-    authController.me(req, res, next),
+    userController.me(req, res, next),
 );
 
-authRouter.get('/logout', (req: Request, res: Response, next: NextFunction) =>
-  authController.logout(req, res, next),
+userRouter.get('/logout', (req: Request, res: Response, next: NextFunction) =>
+  userController.logout(req, res, next),
 );
 
-export default authRouter;
+export default userRouter;

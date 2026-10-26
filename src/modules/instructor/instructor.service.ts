@@ -1,5 +1,5 @@
 import { AppError } from '../../handlers/CustomErrorHandler';
-import type { AuthRepository } from '../auth/auth.repository';
+import type { UserRepository } from '../user/user.repository';
 import type { CourseRepository } from '../course/course.repository';
 import type { InstructorRepository } from './instructor.repository';
 import type { courseDto } from './instructor.schema';
@@ -7,7 +7,7 @@ import type { courseDto } from './instructor.schema';
 export class InstructorService {
   constructor(
     private readonly instructorRepository: InstructorRepository,
-    private readonly userRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
     private readonly courseRepository: CourseRepository,
   ) {}
 

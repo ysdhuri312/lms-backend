@@ -2,9 +2,9 @@ import { eq } from 'drizzle-orm';
 import { db } from '../../configs/db';
 import { usersTable } from '../../db/schema';
 import { AppError } from '../../handlers/CustomErrorHandler';
-import type { registerDto } from './auth.schema';
+import type { registerDto } from './user.schema';
 
-export class AuthRepository {
+export class UserRepository {
   findByEmail = async (email: string) => {
     try {
       const [user] = await db

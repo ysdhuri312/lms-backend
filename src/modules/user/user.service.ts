@@ -1,16 +1,16 @@
 import bcrypt from 'bcryptjs';
 import { AppError } from '../../handlers/CustomErrorHandler';
-import type { AuthRepository } from './auth.repository';
-import type { loginDto, registerDto } from './auth.schema';
+import type { UserRepository } from './user.repository';
+import type { loginDto, registerDto } from './user.schema';
 import type { JwtPayload } from '../../types';
 import { createToken } from '../../utils/token';
 
-export class AuthService {
-  constructor(private readonly authReposiory: AuthRepository) {}
+export class UserService {
+  constructor(private readonly userReposiory: UserRepository) {}
 
   register = async (dto: registerDto) => {
     // if user already exists
-    const existingUser = await this.authReposiory.findByEmail(dto.email);
+    const existingUser = await this.userReposiory.findByEmail(dto.email);
 
     if (existingUser) {
       throw new AppError(
@@ -21,7 +21,7 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-    const user = await this.authReposiory.create({
+    const user = await this.userReposiory.create({
       name: dto.name,
       email: dto.email,
       password: hashedPassword,
@@ -39,7 +39,7 @@ export class AuthService {
 
   login = async (dto: loginDto) => {
     // find user in db
-    const user = await this.authReposiory.findByEmail(dto.email);
+    const user = await this.userReposiory.findByEmail(dto.email);
 
     if (!user) {
       throw new AppError(401, 'User not register');

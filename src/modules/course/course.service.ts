@@ -2,7 +2,7 @@ import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
 import { env } from '../../configs/env';
 import { AppError } from '../../handlers/CustomErrorHandler';
 import { instance } from '../../utils/payments';
-import type { AuthRepository } from '../auth/auth.repository';
+import type { UserRepository } from '../user/user.repository';
 import type { CourseRepository } from './course.repository';
 
 type VerifyPaymentInput = {
@@ -14,7 +14,7 @@ type VerifyPaymentInput = {
 export class CourseService {
   constructor(
     private readonly courseRepository: CourseRepository,
-    private readonly userRepository: AuthRepository,
+    private readonly userRepository: UserRepository,
   ) {}
 
   getAllCourses = async () => {

@@ -4,17 +4,17 @@ import {
   registerSchema,
   type loginDto,
   type registerDto,
-} from './auth.schema';
+} from './user.schema';
 import { cookieOptions } from '../../utils/cookieOption';
-import type { AuthService } from './auth.service';
+import type { AuthService } from './user.service';
 
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   register = async (req: Request, res: Response, _next: NextFunction) => {
     const dto: registerDto = registerSchema.parse(req.body);
 
-    const { user, token } = await this.authService.register(dto);
+    const { user, token } = await this.userService.register(dto);
 
     res.status(201).cookie('token', token, cookieOptions).json({
       success: true,
@@ -25,7 +25,7 @@ export class AuthController {
   login = async (req: Request, res: Response, _next: NextFunction) => {
     const dto: loginDto = loginSchema.parse(req.body);
 
-    const { user, token } = await this.authService.login(dto);
+    const { user, token } = await this.userService.login(dto);
 
     res.status(200).cookie('token', token, cookieOptions).json({
       success: true,

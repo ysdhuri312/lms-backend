@@ -1,7 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { courseController } from '../../modules/course/container';
-import { authorize } from '../../modules/auth/auth.middleware';
+import { authorize } from '../../modules/user/user.middleware';
 
 const courseRouter = express.Router();
 

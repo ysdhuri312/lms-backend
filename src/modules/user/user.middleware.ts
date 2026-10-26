@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { AppError } from '../../handlers/CustomErrorHandler';
-import { authRepository } from './container';
+import { userRepository } from './container';
 import { verifyToken } from '../../utils/token';
 
 export const authorize = async (
@@ -18,7 +18,7 @@ export const authorize = async (
 
     const decoded = verifyToken(token);
 
-    const user = await authRepository.findByEmail(decoded.email);
+    const user = await userRepository.findByEmail(decoded.email);
 
     if (!user) {
       return next(new AppError(401, 'Unauthorized'));
