@@ -12,4 +12,12 @@ instructorRouter.get(
     instructorController.updateRoleToInstructor(req, res, next),
 );
 
+instructorRouter.post(
+  '/add-course',
+  authorize,
+  // upload.single('thumbnailUrl'), TODO: Update after frontend design
+  (req: Request, res: Response, next: NextFunction) =>
+    instructorController.addCourse(req, res, next),
+);
+
 export default instructorRouter;

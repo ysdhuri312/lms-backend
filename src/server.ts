@@ -1,7 +1,7 @@
 import { app } from './app.js';
 import { connectDB, disconnectDB } from './configs/db.js';
 import { env } from './configs/env.js';
-import connectCloudinary from './utils/cloudinary.js';
+import { connectCloudinary } from './utils/cloudinary.js';
 
 await connectDB();
 const server = app.listen(env.PORT, () => {
