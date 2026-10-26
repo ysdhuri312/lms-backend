@@ -1,9 +1,15 @@
 import { AppError } from '../../handlers/CustomErrorHandler';
+import type { AuthRepository } from '../auth/auth.repository';
+import type { CourseRepository } from '../course/course.repository';
 import type { InstructorRepository } from './instructor.repository';
 import type { courseDto } from './instructor.schema';
 
 export class InstructorService {
-  constructor(private readonly instructorRepository: InstructorRepository) {}
+  constructor(
+    private readonly instructorRepository: InstructorRepository,
+    private readonly userRepository: AuthRepository,
+    private readonly courseRepository: CourseRepository,
+  ) {}
 
   // update role to educator
   updateRoleToInstructor = async (userId: number) => {
@@ -25,5 +31,17 @@ export class InstructorService {
     const course = await this.instructorRepository.addCourse(dto, userId);
 
     return course;
+  };
+
+  // find course
+  getInstructorCourses = async (userId: number) => {
+    const user = await this.userRepository.findById(userId);
+
+    if (user?.role !== 'instructor')
+      throw new AppError(401, 'User not instructor');
+
+    const courses = await this.courseRepository.getAllCoursesById(user.id);
+
+    return courses;
   };
 }

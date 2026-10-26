@@ -20,4 +20,11 @@ instructorRouter.post(
     instructorController.addCourse(req, res, next),
 );
 
+instructorRouter.get(
+  '/courses',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    instructorController.getInstructorCourses(req, res, next),
+);
+
 export default instructorRouter;

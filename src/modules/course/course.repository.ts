@@ -123,4 +123,15 @@ export class CourseRepository {
       throw new AppError(500, 'Error while upadte purchase course status', err);
     }
   };
+
+  getAllCoursesById = async (userId: number) => {
+    try {
+      return await db
+        .select()
+        .from(courseTable)
+        .where(eq(courseTable.creatorId, userId));
+    } catch (err) {
+      throw new AppError(500, 'Error while fetching courses by userId', err);
+    }
+  };
 }

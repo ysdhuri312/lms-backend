@@ -37,4 +37,20 @@ export class InstructorController {
       course,
     });
   };
+
+  getInstructorCourses = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const userId = req.user?.id as number;
+
+    const courses = await this.instuctorService.getInstructorCourses(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Add course successfully',
+      courses,
+    });
+  };
 }
