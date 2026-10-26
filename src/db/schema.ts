@@ -83,7 +83,10 @@ export const purchaseTable = pgTable('purchases', {
   courseId: varchar('course_id', { length: 255 })
     .notNull()
     .references(() => courseTable.courseId),
-  userId: integer('user_id')
+  purchaseStudentId: integer('purchase_student_id')
+    .notNull()
+    .references(() => usersTable.id),
+  creatorId: integer('creator_id')
     .notNull()
     .references(() => usersTable.id),
   razorpayOrderId: varchar('razorpay_order_id', {

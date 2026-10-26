@@ -49,4 +49,18 @@ export class InstructorService {
 
     return courses;
   };
+
+  // Get enrolled student data
+  getEnrolledStudentData = async (userId: number) => {
+    const instructor = await this.userRepository.findById(userId);
+
+    if (instructor?.role !== 'instructor')
+      throw new AppError(401, 'User not instructor');
+
+    const courses = await this.instructorRepository.getEnrolledStudentData(
+      instructor.id,
+    );
+
+    return courses;
+  };
 }

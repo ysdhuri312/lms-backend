@@ -53,4 +53,20 @@ export class InstructorController {
       courses,
     });
   };
+
+  getEnrolledStudentData = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const userId = req.user?.id as number;
+
+    const students = await this.instuctorService.getEnrolledStudentData(userId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Fetch student enrolled data',
+      students,
+    });
+  };
 }

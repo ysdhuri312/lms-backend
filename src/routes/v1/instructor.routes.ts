@@ -27,4 +27,11 @@ instructorRouter.get(
     instructorController.getInstructorCourses(req, res, next),
 );
 
+instructorRouter.get(
+  '/enrolled-students',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    instructorController.getEnrolledStudentData(req, res, next),
+);
+
 export default instructorRouter;

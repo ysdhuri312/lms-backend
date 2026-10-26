@@ -56,11 +56,13 @@ export class CourseService {
 
     const purchaseData: {
       courseId: string;
-      userId: number;
+      purchaseStudentId: number;
+      creatorId: number;
       amount: number;
     } = {
       courseId: course.courseId,
-      userId: user.id,
+      purchaseStudentId: user.id,
+      creatorId: course.creatorId,
       amount: courseAmount,
     };
 

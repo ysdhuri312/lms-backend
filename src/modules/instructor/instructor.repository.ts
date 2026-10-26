@@ -4,6 +4,7 @@ import {
   chapterTable,
   courseTable,
   lectureTable,
+  purchaseTable,
   usersTable,
 } from '../../db/schema';
 import { AppError } from '../../handlers/CustomErrorHandler';
@@ -123,6 +124,28 @@ export class InstructorRepository {
       return course;
     } catch (err) {
       throw new AppError(500, 'Error while adding new courese', err);
+    }
+  };
+
+  // Get enrolled student data
+  getEnrolledStudentData = async (instructorId: number) => {
+    try {
+      const students = await db
+        .select({
+          studentId: purchaseTable.id,
+          courseTitle: courseTable.title,
+        })
+        .from(purchaseTable)
+        .leftJoin(courseTable, eq(purchaseTable.courseId, courseTable.courseId))
+        .where(eq(courseTable.creatorId, instructorId));
+
+      return students;
+    } catch (err) {
+      throw new AppError(
+        500,
+        'Error while find student enrolled course by specific instructor',
+        err,
+      );
     }
   };
 }

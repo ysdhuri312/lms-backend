@@ -26,7 +26,8 @@ export class CourseRepository {
 
   purchaseCourse = async (purchaseData: {
     courseId: string;
-    userId: number;
+    purchaseStudentId: number;
+    creatorId: number;
     amount: number;
   }) => {
     try {
@@ -68,7 +69,7 @@ export class CourseRepository {
         .from(purchaseTable)
         .where(
           and(
-            eq(purchaseTable.userId, userId),
+            eq(purchaseTable.purchaseStudentId, userId),
             eq(purchaseTable.courseId, courseId),
             eq(purchaseTable.status, 'completed'),
           ),
@@ -94,7 +95,7 @@ export class CourseRepository {
         .from(purchaseTable)
         .where(
           and(
-            eq(purchaseTable.userId, userId),
+            eq(purchaseTable.purchaseStudentId, userId),
             eq(purchaseTable.razorpayOrderId, razorpayOrderId),
           ),
         );
