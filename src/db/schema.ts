@@ -1,5 +1,7 @@
+import { sql } from 'drizzle-orm';
 import {
   boolean,
+  check,
   integer,
   numeric,
   pgEnum,
@@ -76,6 +78,27 @@ export const lectureTable = pgTable('lectures', {
     .references(() => courseTable.courseId)
     .notNull(),
 });
+
+// course ratings table
+export const courseRatingsTable = pgTable(
+  'course_ratings',
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    userId: integer()
+      .notNull()
+      .references(() => usersTable.id),
+    courseId: varchar('course_id', { length: 255 })
+      .references(() => courseTable.courseId)
+      .notNull(),
+    rating: integer().notNull(),
+  },
+  (table) => [
+    check(
+      'ratings_range_check',
+      sql`${table.rating} >= 1 AND ${table.rating} <= 5`,
+    ),
+  ],
+);
 
 // Purchase Schema
 export const purchaseTable = pgTable('purchases', {
