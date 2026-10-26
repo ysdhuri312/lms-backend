@@ -22,6 +22,11 @@ export class InstructorService {
 
   // Add Course
   addCourse = async (dto: courseDto, userId: number) => {
+    const user = await this.userRepository.findById(userId);
+
+    if (user?.role !== 'instructor')
+      throw new AppError(401, 'User not instructor');
+
     const { chapters } = dto;
 
     if (!Array.isArray(chapters) || chapters.length === 0) {
