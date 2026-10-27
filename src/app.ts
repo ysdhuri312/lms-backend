@@ -41,7 +41,7 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 // Router
-app.use('/api/v1/auth', userRouter);
+app.use('/api/v1/user', userRouter);
 app.use('/api/v1/course', courseRouter);
 app.use('/api/v1/student', studentRouter);
 app.use('/api/v1/instructor', instructorRouter);
