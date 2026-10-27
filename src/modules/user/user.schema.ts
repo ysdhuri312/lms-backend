@@ -18,6 +18,7 @@ export const ratingSchema = z.object({
 
 export const courseIdSchema = z.object({
   courseId: z.string(),
+  lectureId: z.string(),
 });
 
 export type registerDto = z.infer<typeof registerSchema>;

@@ -57,7 +57,7 @@ export class UserController {
     const userId = req.user?.id as number;
     const { courseId } = courseIdSchema.parse(req.body);
 
-    const progress = await this.userService.userCourseProgress(
+    const progress = await this.userService.getUserCourseProgress(
       userId,
       courseId,
     );
@@ -65,6 +65,28 @@ export class UserController {
     res.status(200).json({
       success: true,
       message: 'Fetching progress details succefully',
+      progress,
+    });
+  };
+
+  // TODO: Changes want below controller in future
+  updateUserCourseProgress = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const userId = req.user?.id as number;
+    const { courseId, lectureId } = courseIdSchema.parse(req.body);
+
+    const progress = await this.userService.updateuUserCourseProgress(
+      userId,
+      courseId,
+      lectureId,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Update course progress successfully',
       progress,
     });
   };

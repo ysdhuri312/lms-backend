@@ -130,4 +130,40 @@ export class UserRepository {
       throw new AppError(500, 'Error while fetching course progress', err);
     }
   };
+
+  lectureAlreadyCompleted = async (userId: number, lectureId: string) => {
+    try {
+      const [progress] = await db
+        .select({})
+        .from(courseProgressTable)
+        .where(
+          and(
+            eq(courseProgressTable.userId, userId),
+            eq(courseProgressTable.lectureId, lectureId),
+            eq(courseProgressTable.completed, true),
+          ),
+        );
+
+      return progress;
+    } catch (err) {
+      throw new AppError(500, 'Error while fetching lecture progress', err);
+    }
+  };
+
+  updateUserCourseProgress = async (
+    userId: number,
+    courseId: string,
+    lectureId: string,
+  ) => {
+    try {
+      await db.insert(courseProgressTable).values({
+        courseId,
+        userId,
+        lectureId,
+        completed: true,
+      });
+    } catch (err) {
+      throw new AppError(500, 'Error while fetching lecture progress', err);
+    }
+  };
 }

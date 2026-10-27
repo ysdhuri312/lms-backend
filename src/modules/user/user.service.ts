@@ -88,7 +88,7 @@ export class UserService {
     return true;
   };
 
-  userCourseProgress = async (userId: number, courseId: string) => {
+  getUserCourseProgress = async (userId: number, courseId: string) => {
     const isCourseEnrolled = await this.userRepository.courseEnrolled(
       userId,
       courseId,
@@ -103,5 +103,35 @@ export class UserService {
     );
 
     return progress;
+  };
+
+  updateuUserCourseProgress = async (
+    userId: number,
+    courseId: string,
+    lectureId: string,
+  ) => {
+    // Check user course enrolled or not
+    const isCourseEnrolled = await this.userRepository.courseEnrolled(
+      userId,
+      courseId,
+    );
+
+    if (!isCourseEnrolled)
+      throw new AppError(400, 'User not enrolled selected course');
+
+    // Check lecture already completed
+    const lectureAlreadyCompleted =
+      await this.userRepository.lectureAlreadyCompleted(userId, lectureId);
+
+    console.log(lectureAlreadyCompleted);
+
+    if (lectureAlreadyCompleted)
+      throw new AppError(400, 'Lecture already completed');
+
+    await this.userRepository.updateUserCourseProgress(
+      userId,
+      courseId,
+      lectureId,
+    );
   };
 }
