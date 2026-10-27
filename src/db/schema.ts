@@ -100,6 +100,32 @@ export const courseRatingsTable = pgTable(
   ],
 );
 
+export const courseProgressTable = pgTable(
+  'course_progress',
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    courseId: varchar('course_id', { length: 255 })
+      .notNull()
+      .references(() => courseTable.courseId),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => usersTable.id),
+    lectureId: varchar('lecture_id', { length: 255 })
+      .notNull()
+      .references(() => lectureTable.lectureId),
+    progressInPercentage: integer('progress_in_percentage')
+      .default(0)
+      .notNull(),
+    completed: boolean().notNull().default(false),
+  },
+  (table) => [
+    check(
+      'progress_range_check',
+      sql`${table.progressInPercentage} >= 0 AND ${table.progressInPercentage} <= 100`,
+    ),
+  ],
+);
+
 // Purchase Schema
 export const purchaseTable = pgTable('purchases', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
