@@ -23,6 +23,13 @@ userRouter.get(
 );
 
 userRouter.get(
+  '/get-course-progress',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.getUserCourseProgress(req, res, next),
+);
+
+userRouter.get(
   '/me',
   authorize,
   (req: Request, res: Response, next: NextFunction) =>

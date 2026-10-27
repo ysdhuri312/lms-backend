@@ -1,6 +1,11 @@
 import { and, eq } from 'drizzle-orm';
 import { db } from '../../configs/db';
-import { courseRatingsTable, purchaseTable, usersTable } from '../../db/schema';
+import {
+  courseProgressTable,
+  courseRatingsTable,
+  purchaseTable,
+  usersTable,
+} from '../../db/schema';
 import { AppError } from '../../handlers/CustomErrorHandler';
 import type { registerDto } from './user.schema';
 
@@ -106,6 +111,23 @@ export class UserRepository {
         .values({ userId, courseId, rating });
     } catch (err) {
       throw new AppError(500, 'Error while add rating', err);
+    }
+  };
+
+  userCourseProgress = async (userId: number, courseId: string) => {
+    try {
+      const progress = await db
+        .select()
+        .from(courseProgressTable)
+        .where(
+          and(
+            eq(courseProgressTable.userId, userId),
+            eq(courseProgressTable.courseId, courseId),
+          ),
+        );
+      return progress;
+    } catch (err) {
+      throw new AppError(500, 'Error while fetching course progress', err);
     }
   };
 }

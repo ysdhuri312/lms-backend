@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import {
+  courseIdSchema,
   loginSchema,
   ratingSchema,
   registerSchema,
@@ -45,6 +46,26 @@ export class UserController {
     res.status(200).json({
       success: true,
       message: 'Add rating succefully',
+    });
+  };
+
+  getUserCourseProgress = async (
+    req: Request,
+    res: Response,
+    _next: NextFunction,
+  ) => {
+    const userId = req.user?.id as number;
+    const { courseId } = courseIdSchema.parse(req.body);
+
+    const progress = await this.userService.userCourseProgress(
+      userId,
+      courseId,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Fetching progress details succefully',
+      progress,
     });
   };
 

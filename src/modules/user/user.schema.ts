@@ -16,6 +16,10 @@ export const ratingSchema = z.object({
   rating: z.number().min(1).max(5),
 });
 
+export const courseIdSchema = z.object({
+  courseId: z.string(),
+});
+
 export type registerDto = z.infer<typeof registerSchema>;
 export type loginDto = z.infer<typeof loginSchema>;
 export type ratingDto = z.infer<typeof ratingSchema>;

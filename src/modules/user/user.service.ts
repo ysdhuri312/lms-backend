@@ -6,11 +6,11 @@ import type { JwtPayload } from '../../types';
 import { createToken } from '../../utils/token';
 
 export class UserService {
-  constructor(private readonly userReposiory: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   register = async (dto: registerDto) => {
     // if user already exists
-    const existingUser = await this.userReposiory.findByEmail(dto.email);
+    const existingUser = await this.userRepository.findByEmail(dto.email);
 
     if (existingUser) {
       throw new AppError(
@@ -21,7 +21,7 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-    const user = await this.userReposiory.create({
+    const user = await this.userRepository.create({
       name: dto.name,
       email: dto.email,
       password: hashedPassword,
@@ -39,7 +39,7 @@ export class UserService {
 
   login = async (dto: loginDto) => {
     // find user in db
-    const user = await this.userReposiory.findByEmail(dto.email);
+    const user = await this.userRepository.findByEmail(dto.email);
 
     if (!user) {
       throw new AppError(401, 'User not register');
@@ -62,7 +62,7 @@ export class UserService {
   };
 
   addUserRating = async (userId: number, courseId: string, rating: number) => {
-    const isCourseEnrolled = await this.userReposiory.courseEnrolled(
+    const isCourseEnrolled = await this.userRepository.courseEnrolled(
       userId,
       courseId,
     );
@@ -70,7 +70,7 @@ export class UserService {
     if (!isCourseEnrolled)
       throw new AppError(400, 'User not enrolled selected course');
 
-    const isUserAlreadyRated = await this.userReposiory.userAlreadyRated(
+    const isUserAlreadyRated = await this.userRepository.userAlreadyRated(
       userId,
       courseId,
     );
@@ -78,13 +78,30 @@ export class UserService {
     // Check is user already rated
     if (isUserAlreadyRated) {
       // Update the existing rating
-      await this.userReposiory.updateRating(isUserAlreadyRated.id, rating);
+      await this.userRepository.updateRating(isUserAlreadyRated.id, rating);
       return true;
     }
 
     // Add rating
-    await this.userReposiory.addRating(userId, courseId, rating);
+    await this.userRepository.addRating(userId, courseId, rating);
 
     return true;
+  };
+
+  userCourseProgress = async (userId: number, courseId: string) => {
+    const isCourseEnrolled = await this.userRepository.courseEnrolled(
+      userId,
+      courseId,
+    );
+    // Check user course enrolled or not
+    if (!isCourseEnrolled)
+      throw new AppError(400, 'User not enrolled selected course');
+
+    const progress = await this.userRepository.userCourseProgress(
+      userId,
+      courseId,
+    );
+
+    return progress;
   };
 }
