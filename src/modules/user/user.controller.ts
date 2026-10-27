@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import {
   loginSchema,
+  ratingSchema,
   registerSchema,
   type loginDto,
   type registerDto,
@@ -22,6 +23,7 @@ export class UserController {
       user,
     });
   };
+
   login = async (req: Request, res: Response, _next: NextFunction) => {
     const dto: loginDto = loginSchema.parse(req.body);
 
@@ -31,6 +33,18 @@ export class UserController {
       success: true,
       message: 'User login successfully',
       user,
+    });
+  };
+
+  addUserRating = async (req: Request, res: Response, _next: NextFunction) => {
+    const userId = req.user?.id as number;
+    const { courseId, rating } = ratingSchema.parse(req.body);
+
+    await this.userService.addUserRating(userId, courseId, rating);
+
+    res.status(200).json({
+      success: true,
+      message: 'Add rating succefully',
     });
   };
 

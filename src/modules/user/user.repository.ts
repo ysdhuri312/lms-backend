@@ -1,6 +1,6 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '../../configs/db';
-import { usersTable } from '../../db/schema';
+import { courseRatingsTable, purchaseTable, usersTable } from '../../db/schema';
 import { AppError } from '../../handlers/CustomErrorHandler';
 import type { registerDto } from './user.schema';
 
@@ -42,6 +42,70 @@ export class UserRepository {
       return user;
     } catch (err) {
       throw new AppError(500, 'Error while creating user', err);
+    }
+  };
+
+  courseEnrolled = async (userId: number, courseId: string) => {
+    try {
+      const [result] = await db
+        .select()
+        .from(purchaseTable)
+        .where(
+          and(
+            eq(purchaseTable.purchaseStudentId, userId),
+            eq(purchaseTable.courseId, courseId),
+            eq(purchaseTable.status, 'completed'),
+          ),
+        );
+      return result;
+    } catch (err) {
+      throw new AppError(
+        500,
+        'Error while check user course enrolled or not',
+        err,
+      );
+    }
+  };
+
+  userAlreadyRated = async (userId: number, courseId: string) => {
+    try {
+      const [result] = await db
+        .select()
+        .from(courseRatingsTable)
+        .where(
+          and(
+            eq(courseRatingsTable.userId, userId),
+            eq(courseRatingsTable.courseId, courseId),
+          ),
+        );
+      return result;
+    } catch (err) {
+      throw new AppError(
+        500,
+        'Error while check user course enrolled or not',
+        err,
+      );
+    }
+  };
+
+  updateRating = async (courseRatingId: number, rating: number) => {
+    try {
+      return await db
+        .update(courseRatingsTable)
+        .set({ rating: rating })
+        .where(eq(courseRatingsTable.id, courseRatingId));
+    } catch (err) {
+      throw new AppError(500, 'Error while update rating', err);
+    }
+  };
+
+  addRating = async (userId: number, courseId: string, rating: number) => {
+    try {
+      return await db
+        .insert(courseRatingsTable)
+        .values({ userId, courseId, rating });
+    } catch (err) {
+      throw new AppError(500, 'Error while add rating', err);
     }
   };
 }

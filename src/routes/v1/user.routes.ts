@@ -16,6 +16,13 @@ userRouter.post('/login', (req: Request, res: Response, next: NextFunction) =>
 );
 
 userRouter.get(
+  '/add-rating',
+  authorize,
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.addUserRating(req, res, next),
+);
+
+userRouter.get(
   '/me',
   authorize,
   (req: Request, res: Response, next: NextFunction) =>

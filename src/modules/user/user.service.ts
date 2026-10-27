@@ -60,4 +60,31 @@ export class UserService {
 
     return { user: { id: user.id, email: user.email }, token };
   };
+
+  addUserRating = async (userId: number, courseId: string, rating: number) => {
+    const isCourseEnrolled = await this.userReposiory.courseEnrolled(
+      userId,
+      courseId,
+    );
+    // Check user course enrolled or not
+    if (!isCourseEnrolled)
+      throw new AppError(400, 'User not enrolled selected course');
+
+    const isUserAlreadyRated = await this.userReposiory.userAlreadyRated(
+      userId,
+      courseId,
+    );
+
+    // Check is user already rated
+    if (isUserAlreadyRated) {
+      // Update the existing rating
+      await this.userReposiory.updateRating(isUserAlreadyRated.id, rating);
+      return true;
+    }
+
+    // Add rating
+    await this.userReposiory.addRating(userId, courseId, rating);
+
+    return true;
+  };
 }

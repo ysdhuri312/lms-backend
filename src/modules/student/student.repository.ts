@@ -50,7 +50,7 @@ export class StudentRepository {
         .from(purchaseTable)
         .where(
           and(
-            eq(purchaseTable.userId, userId),
+            eq(purchaseTable.purchaseStudentId, userId),
             eq(purchaseTable.status, 'completed'),
           ),
         );
